@@ -1,0 +1,17 @@
+{
+  "name": "todo-app-cicd",
+  "version": "1.0.0",
+  "description": "A Node.js to-do list app for CI/CD practice",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
+  }
+}
