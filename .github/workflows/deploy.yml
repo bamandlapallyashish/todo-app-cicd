@@ -1,0 +1,29 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x "*.git*"
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: todo-app-cicd
+          environment_name: todo-app-cicd-env
+          version_label: ${{ github.sha }}
+          region: us-east-1
+          deployment_package: deploy.zip
